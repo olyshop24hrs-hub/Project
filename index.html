@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oly Shop — Duka la Mahitaji ya Nyumbani</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+  :root{
+    --bg:#12132a;
+    --panel:#1c1d3f;
+    --panel-2:#242651;
+    --purple:#8b7cf0;
+    --gold:#f0a93a;
+    --coral:#e85d4e;
+    --text:#f5f2ea;
+    --muted:#a6a4cc;
+    --line:#33355e;
+  }
+  
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+  }
+
+  h1,h2,h3,.font-display{font-family:'Fraunces',serif;font-weight:600;}
+  a{color:inherit;text-decoration:none;}
+  
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    color:var(--gold);
+    font-size:0.8rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+  }
+
+  .beadwork{
+    height:10px;width:100%;
+    background-image:
+      radial-gradient(circle, var(--gold) 2.5px, transparent 2.6px),
+      radial-gradient(circle, var(--coral) 2.5px, transparent 2.6px),
+      radial-gradient(circle, var(--purple) 2.5px, transparent 2.6px);
+    background-size:24px 10px, 24px 10px, 24px 10px;
+    background-position:0 0, 8px 0, 16px 0;
+  }
+
+  .navbar{
+    background:rgba(18,19,42,0.95) !important;
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .navbar-brand{font-family:'Fraunces',serif;font-weight:700;color:var(--text) !important;}
+  .nav-link{color:var(--muted) !important;font-weight:500;}
+  .nav-link:hover{color:var(--gold) !important;}
+  
+  .btn-coral{background:var(--coral);border-color:var(--coral);color:#12132a;font-weight:700;}
+  .btn-coral:hover{background:var(--gold);border-color:var(--gold);color:#12132a;}
+
+  section{padding:50px 0;}
+  .bg-panel{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+
+  /* Search & Filter Tuli (Sticky) kwa Skrini Zote */
+  .search-filter-wrap {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 30px;
+    position: sticky;
+    top: 76px;
+    z-index: 1020;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+  
+  .custom-search-input {
+    background: var(--panel) !important;
+    border: 1px solid var(--line) !important;
+    color: var(--text) !important;
+  }
+  .custom-search-input:focus {
+    border-color: var(--purple) !important;
+    box-shadow: 0 0 0 0.2rem rgba(139, 124, 240, 0.25) !important;
+  }
+
+  #categoryFilters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .filter-chip {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all .15s ease;
+  }
+  .filter-chip:hover, .filter-chip.active {
+    background: var(--purple);
+    border-color: var(--purple);
+    color: #fff;
+  }
+
+  .category-dropdown .dropdown-toggle {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 6px 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: all .15s ease;
+  }
+  .category-dropdown .dropdown-toggle:hover, 
+  .category-dropdown .dropdown-toggle.active-dropdown {
+    background: var(--purple);
+    border-color: var(--purple);
+    color: #fff;
+  }
+  .dropdown-menu-custom {
+    background: var(--panel-2) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 12px !important;
+    padding: 8px !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    max-height: 250px;
+    overflow-y: auto;
+  }
+  .dropdown-item-custom {
+    color: var(--muted) !important;
+    font-size: 0.85rem;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all .15s ease;
+  }
+  .dropdown-item-custom:hover, .dropdown-item-custom.active {
+    background: var(--purple) !important;
+    color: #fff !important;
+  }
+
+  /* Kadi za Bidhaa zinabadilika ukubwa kulingana na skrini (Responsive Grid) */
+  .product-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    text-align:center;
+    padding:20px 14px;
+    height:100%;
+    transition:transform .12s ease, border-color .12s ease;
+  }
+  .product-card:hover{transform:translateY(-3px);border-color:var(--purple);}
+  .product-card img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:8px;margin:0 auto 10px;display:block;}
+  .product-card .p-icon{font-size:2.4rem;margin-bottom:8px;}
+  .product-card .p-name{font-weight:600;font-size:0.92rem;}
+  .product-card .p-price{font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:0.85rem;}
+
+  .stat-card{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:12px;
+    text-align:center;
+    padding:20px 10px;
+  }
+  .stat-num{font-family:'Fraunces',serif;font-size:1.8rem;color:var(--gold);font-weight:700;}
+  .stat-label{font-size:0.78rem;color:var(--muted);}
+
+  .contact-icon{
+    width:42px;height:42px;flex-shrink:0;
+    border-radius:10px;
+    background:var(--panel-2);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.15rem;
+    color:var(--gold);
+  }
+  .map-wrap{border-radius:14px;overflow:hidden;border:1px solid var(--line);min-height:280px;}
+  .map-wrap iframe{width:100%;height:100%;min-height:280px;border:0;display:block;}
+
+  footer{border-top:1px solid var(--line);color:var(--muted);font-size:0.85rem;}
+
+  .offcanvas{background:var(--panel) !important;color:var(--text) !important;border-left:1px solid var(--line);}
+  .cart-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);}
+  .cart-row img, .cart-row .cr-icon{width:64px;height:64px;border-radius:8px;object-fit:cover;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--panel-2);font-size:1.4rem;}
+  .cart-row-info{flex:1;min-width:0;}
+  .cart-row-name{font-size:0.88rem;font-weight:600;}
+  .cart-row-price{font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--muted);}
+  .cart-qty-ctrl{display:flex;align-items:center;gap:6px;}
+  .cart-qty-btn{width:24px;height:24px;border-radius:6px;border:1px solid var(--line);background:var(--panel-2);color:var(--text);cursor:pointer;font-size:0.9rem;line-height:1;}
+  .cart-empty{color:var(--muted);font-size:0.88rem;text-align:center;padding:30px 10px;font-style:italic;}
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">Oly Shop</a>
+    <div class="d-flex align-items-center gap-2 order-lg-3">
+      <button class="btn btn-outline-light btn-sm rounded-pill px-3 position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
+        <i class="bi bi-cart3"></i>
+        <span class="visually-hidden">Kikapu</span>
+        <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style="background:var(--gold);color:#12132a;display:none;">0</span>
+      </button>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"><span class="navbar-toggler-icon"></span></button>
+    </div>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-4">
+        <li class="nav-item"><a class="nav-link" href="#bidhaa">Bidhaa</a></li>
+        <li class="nav-item"><a class="nav-link" href="#kuhusu">Kuhusu Sisi</a></li>
+        <li class="nav-item"><a class="nav-link" href="#mawasiliano">Mawasiliano</a></li>
+        <li class="nav-item"><a class="nav-link" href="#eneo">Eneo</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Eneo dogo la kichwa -->
+<section class="pb-2 pt-4">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-12 text-center">
+        <p class="eyebrow mb-1">Karibu Oly Shop</p>
+        <h1 class="h3 mb-2">Mahitaji yako ya nyumbani, karibu nawe</h1>
+        <p class="text-muted" style="font-size:0.92rem;">Tunauza vyakula na bidhaa za nyumbani kwa bei nzuri na huduma ya haraka.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="beadwork my-2"></div>
+
+<!-- Sehemu ya Bidhaa (Search & Filter ziko hapa juu na ni Sticky) -->
+<section id="bidhaa" class="pt-3">
+  <div class="container">
+    
+    <div class="search-filter-wrap">
+      <div class="row g-3 align-items-center">
+        <div class="col-lg-5">
+          <div class="input-group">
+            <span class="input-group-text custom-search-input border-end-0 text-muted"><i class="bi bi-search"></i></span>
+            <input type="text" id="productSearchInput" class="form-control custom-search-input border-start-0 ps-0" placeholder="Tafuta bidhaa...">
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="d-flex flex-wrap gap-2 justify-content-lg-end" id="categoryFilters">
+            <button class="filter-chip active" data-filter="all">Zote</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Orodha ya Bidhaa: col-6 kwenye simu, col-md-4 kwenye tablet, col-lg-3 kwenye kompyuta -->
+    <div class="row g-3" id="productGrid"></div>
+  </div>
+</section>
+
+<!-- Kuhusu Sisi -->
+<section id="kuhusu" class="bg-panel">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <p class="eyebrow mb-2">Kuhusu Sisi</p>
+        <h2 class="mb-3">Duka la Oly unaloweza kuliamini</h2>
+        <p style="color:var(--muted);line-height:1.7;">Oly Shop ni duka la mahitaji ya kila siku linalohudumia wateja wetu kwa uaminifu mkubwa. Tumejikita katika kutoa bidhaa bora, bei nafuu, na huduma bora.</p>
+        <div class="row g-3 mt-4">
+          <div class="col-4">
+            <div class="stat-card">
+              <div class="stat-num">100%</div>
+              <div class="stat-label">Ubora Halisi</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="stat-card">
+              <div class="stat-num">7</div>
+              <div class="stat-label">Siku kwa Wiki</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="stat-card">
+              <div class="stat-num">Fast</div>
+              <div class="stat-label">Huduma ya Haraka</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="p-4 rounded-3" style="background:var(--panel-2);border:1px solid var(--line);">
+          <h4 class="font-display mb-3" style="color:var(--gold);">Huduma Zetu</h4>
+          <ul class="list-unstyled mb-0" style="color:var(--muted);display:flex;flex-direction:column;gap:12px;">
+            <li><i class="bi bi-check2-circle text-success me-2"></i> Uuzaji wa nafaka na bidhaa za vyakula</li>
+            <li><i class="bi bi-check2-circle text-success me-2"></i> Usambazaji wa mafuta ya kupika na viungo</li>
+            <li><i class="bi bi-check2-circle text-success me-2"></i> Bidhaa za usafi wa nyumbani na sabuni</li>
+            <li><i class="bi bi-check2-circle text-success me-2"></i> Huduma ya kuagiza kwa urahisi kupitia WhatsApp</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mawasiliano na Eneo (Location) -->
+<section id="mawasiliano">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-6">
+        <p class="eyebrow mb-2">Mawasiliano</p>
+        <h2 class="mb-4">Tuko tayari kukusaidia</h2>
+        <div class="d-flex flex-column gap-4">
+          <div class="d-flex align-items-center gap-3">
+            <div class="contact-icon"><i class="bi bi-whatsapp"></i></div>
+            <div>
+              <div style="font-size:0.82rem;color:var(--muted);">WhatsApp / Simu</div>
+              <div style="font-weight:600;">+255 688 628 503</div>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-3">
+            <div class="contact-icon"><i class="bi bi-envelope"></i></div>
+            <div>
+              <div style="font-size:0.82rem;color:var(--muted);">Barua pepe</div>
+              <div style="font-weight:600;">info@olyshop.co.tz</div>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-3">
+            <div class="contact-icon"><i class="bi bi-clock"></i></div>
+            <div>
+              <div style="font-size:0.82rem;color:var(--muted);">Muda wa Kufungua</div>
+              <div style="font-weight:600;">Jumatatu – Jumapili: 12:00 Asubuhi – 3:30 Usiku</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6" id="eneo">
+        <p class="eyebrow mb-2">Eneo Letu</p>
+        <h2 class="mb-4">Tembelea Duka Letu</h2>
+        <div class="map-wrap mb-3">
+            <iframe
+            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d2064.9532237067997!2d31.66877041393465!3d-1.8347651151935456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2stz!4v1784642771515!5m2!1sen!2stz"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Ramani ya eneo la Duka Langu">
+          </iframe>
+        </div>
+        <p style="color:var(--muted);font-size:0.9rem;"><i class="bi bi-geo-alt text-danger me-1"></i> Barabara Ya Bukoba Mjini, karibu na kituo cha afya huruma — unaweza kufika moja kwa moja.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="py-4 text-center">
+  &copy; <span id="year"></span> Oly Shop. Haki zote zimehifadhiwa.
+</footer>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title font-display">Kikapu Chako</h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column">
+    <div id="cartItemsList" class="flex-grow-1"></div>
+    <div class="border-top pt-3 mt-2" style="border-color:var(--line) !important;">
+      <div class="d-flex justify-content-between mb-3">
+        <strong>Jumla</strong>
+        <strong id="cartTotal" style="color:var(--gold);font-family:'JetBrains Mono',monospace;">TSh 0</strong>
+      </div>
+      <button class="btn btn-coral w-100 rounded-pill fw-bold mb-2" id="checkoutBtn">Agiza kupitia WhatsApp</button>
+      <button class="btn btn-outline-light w-100 rounded-pill btn-sm" id="clearCartBtn">Futa Kikapu</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+const SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbwyOd-3mUH19kavYsYwCuPNNE1fV-_cCA6X8PFB6h0EPMi1tcTUXyYuZ_8Tnr1quZUQOg/exec';
+
+let allProducts = [];
+let activeCategory = 'all';
+let searchQuery = '';
+let cart = {};
+const WHATSAPP_NUMBER = '255688628503';
+
+function fmt(n){ return 'TSh ' + Math.round(n).toLocaleString('en-US'); }
+
+function addToCart(p){
+  if(cart[p.id]) cart[p.id].qty += 1;
+  else cart[p.id] = {id:p.id, name:p.name, price:p.price, icon:p.icon, image:p.image, qty:1};
+  renderCartPanel();
+}
+
+function changeCartQty(id, delta){
+  if(!cart[id]) return;
+  cart[id].qty += delta;
+  if(cart[id].qty <= 0) delete cart[id];
+  renderCartPanel();
+}
+
+function removeFromCart(id){
+  delete cart[id];
+  renderCartPanel();
+}
+
+function renderCartPanel(){
+  const list = document.getElementById('cartItemsList');
+  const totalEl = document.getElementById('cartTotal');
+  const countEl = document.getElementById('cartCount');
+  const items = Object.values(cart);
+
+  list.innerHTML = '';
+  if(!items.length){
+    list.innerHTML = '<p class="cart-empty">Kikapu chako bado ni tupu.</p>';
+  } else {
+    items.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'cart-row';
+      const media = item.image ? `<img src="${item.image}" alt="${item.name}">` : `<div class="cr-icon">${item.icon || '🛒'}</div>`;
+      row.innerHTML = `
+        ${media}
+        <div class="cart-row-info">
+          <div class="cart-row-name">${item.name}</div>
+          <div class="cart-row-price">${fmt(item.price)} kila moja</div>
+        </div>
+        <div class="cart-qty-ctrl">
+          <button class="cart-qty-btn" data-act="dec">−</button>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;min-width:16px;text-align:center;">${item.qty}</span>
+          <button class="cart-qty-btn" data-act="inc">+</button>
+        </div>
+        <button class="btn btn-sm btn-link text-danger p-0 ms-1" data-act="rm" style="text-decoration:none;">✕</button>
+      `;
+      row.querySelector('[data-act="inc"]').addEventListener('click', () => changeCartQty(item.id, 1));
+      row.querySelector('[data-act="dec"]').addEventListener('click', () => changeCartQty(item.id, -1));
+      row.querySelector('[data-act="rm"]').addEventListener('click', () => removeFromCart(item.id));
+      list.appendChild(row);
+    });
+  }
+
+  const total = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const count = items.reduce((sum, i) => sum + i.qty, 0);
+  totalEl.textContent = fmt(total);
+  countEl.textContent = count;
+  countEl.style.display = count > 0 ? 'inline-block' : 'none';
+}
+
+document.getElementById('clearCartBtn').addEventListener('click', () => {
+  cart = {};
+  renderCartPanel();
+});
+
+document.getElementById('checkoutBtn').addEventListener('click', () => {
+  const items = Object.values(cart);
+  if(!items.length){ alert('Kikapu chako bado ni tupu.'); return; }
+  const lines = items.map(i => `• ${i.name} x${i.qty} — ${fmt(i.price * i.qty)}`);
+  const total = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const message = `Habari Oly Shop, ningependa kuagiza:\n\n${lines.join('\n')}\n\nJumla: ${fmt(total)}`;
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+});
+
+async function loadCategories() {
+  try {
+    const res = await fetch(SHEET_API_URL + '?action=categories');
+    const data = await res.json();
+    const container = document.getElementById('categoryFilters');
+    
+    container.innerHTML = `<button class="filter-chip active" data-filter="all">Zote</button>`;
+
+    if (data.categories && data.categories.length > 0) {
+      const allCats = data.categories;
+      const maxVisible = 5; 
+      const visibleCats = allCats.slice(0, maxVisible);
+      const hiddenCats = allCats.slice(maxVisible);
+
+      visibleCats.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-chip';
+        btn.setAttribute('data-filter', cat);
+        btn.textContent = cat;
+        
+        btn.addEventListener('click', (e) => {
+          setActiveCategoryFilter(cat, e.target);
+        });
+        container.appendChild(btn);
+      });
+
+      if (hiddenCats.length > 0) {
+        const dropdownDiv = document.createElement('div');
+        dropdownDiv.className = 'dropdown category-dropdown';
+        
+        dropdownDiv.innerHTML = `
+          <button class="btn dropdown-toggle d-inline-flex align-items-center justify-content-between gap-1" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="moreCategoriesBtn">
+            <span class="text-truncate">Zaidi</span> <i class="bi bi-chevron-down flex-shrink-0" style="font-size: 0.7rem;"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-custom dropdown-menu-end">
+            ${hiddenCats.map(cat => `<li><a class="dropdown-item dropdown-item-custom d-flex justify-content-between align-items-center" href="#" data-filter="${cat}"><span class="text-truncate">${cat}</span><i class="bi bi-check check-icon ms-2" style="display:none;"></i></a></li>`).join('')}
+          </ul>
+        `;
+
+        dropdownDiv.querySelectorAll('.dropdown-item').forEach(item => {
+          item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const clickedLink = e.target.closest('a');
+            const cat = clickedLink.getAttribute('data-filter');
+            setActiveCategoryFilter(cat, null);
+            
+            const toggleBtn = document.getElementById('moreCategoriesBtn');
+            toggleBtn.querySelector('span').textContent = 'Zingine'; 
+            toggleBtn.classList.add('active-dropdown');
+            
+            dropdownDiv.querySelectorAll('.dropdown-item').forEach(i => {
+              i.classList.remove('active');
+              i.querySelector('.check-icon').style.display = 'none';
+            });
+            clickedLink.classList.add('active');
+            clickedLink.querySelector('.check-icon').style.display = 'inline-block';
+          });
+        });
+
+        container.appendChild(dropdownDiv);
+      }
+    }
+  } catch (err) {
+    console.error("Imeshindwa kupakia kategoria:", err);
+  }
+}
+
+function setActiveCategoryFilter(cat, targetElement) {
+  activeCategory = cat;
+  
+  document.querySelectorAll('#categoryFilters .filter-chip').forEach(b => b.classList.remove('active'));
+  
+  const moreBtn = document.getElementById('moreCategoriesBtn');
+  if(moreBtn) {
+    if(targetElement) {
+      moreBtn.querySelector('span').textContent = 'Zaidi';
+      moreBtn.classList.remove('active-dropdown');
+      document.querySelectorAll('.dropdown-item-custom').forEach(i => {
+        i.classList.remove('active');
+        const icon = i.querySelector('.check-icon');
+        if(icon) icon.style.display = 'none';
+      });
+    }
+  }
+
+  if(targetElement) {
+    targetElement.classList.add('active');
+  }
+
+  filterAndRenderProducts();
+}
+
+async function fetchAllProducts(){
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = `<div class="col-12 text-center py-4"><p class="text-muted fst-italic">Inapakia bidhaa...</p></div>`;
+
+  try {
+    const res = await fetch(SHEET_API_URL + '?action=products');
+    const data = await res.json();
+    
+    if(data.products && data.products.length > 0){
+      allProducts = data.products;
+      filterAndRenderProducts();
+    } else {
+      grid.innerHTML = `<div class="col-12 text-center py-4"><p class="text-muted fst-italic">Hakuna bidhaa zilizopatikana kwenye mfumo.</p></div>`;
+    }
+  } catch(err) {
+    grid.innerHTML = `<div class="col-12 text-center py-4"><p class="text-danger fst-italic">Imeshindwa kupakia bidhaa.</p></div>`;
+  }
+}
+
+function filterAndRenderProducts(){
+  const grid = document.getElementById('productGrid');
+  
+  let filtered = allProducts.filter(p => {
+    let matchesCategory = (activeCategory === 'all') || (p.category && p.category.toLowerCase() === activeCategory.toLowerCase());
+    let matchesSearch = !searchQuery || (p.name && p.name.toLowerCase().includes(searchQuery.toLowerCase()));
+    return matchesCategory && matchesSearch;
+  });
+
+  grid.innerHTML = '';
+
+  if(filtered.length === 0){
+    grid.innerHTML = `<div class="col-12 text-center py-4"><p class="text-muted fst-italic">Hakuna bidhaa zilizopatikana kwa uchujaji huu.</p></div>`;
+    return;
+  }
+
+  filtered.forEach(p => {
+    const col = document.createElement('div');
+    // Hapa ndipo Bootstrap inafanya kazi nzuri: col-6 (bidhaa 2 kwa mstari kwenye simu), col-md-4 (3 kwa mstari kwenye tablet), col-lg-3 (4 kwa mstari kwenye kompyuta)
+    col.className = 'col-6 col-md-4 col-lg-3';
+    const media = p.image
+      ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.outerHTML='<div class=&quot;p-icon&quot;>${p.icon||'🛒'}</div>'">`
+      : `<div class="p-icon">${p.icon || '🛒'}</div>`;
+    col.innerHTML = `<div class="product-card">${media}<div class="p-name">${p.name}</div><div class="p-price">${fmt(p.price)}</div><button class="btn btn-sm btn-coral rounded-pill w-100 mt-2 add-cart-btn">Ongeza Kikapuni</button></div>`;
+    col.querySelector('.add-cart-btn').addEventListener('click', () => addToCart(p));
+    grid.appendChild(col);
+  });
+}
+
+document.getElementById('productSearchInput').addEventListener('input', (e) => {
+  searchQuery = e.target.value.trim().toLowerCase();
+  filterAndRenderProducts();
+});
+
+loadCategories();
+fetchAllProducts();
+renderCartPanel();
+</script>
+</body>
+</html>
