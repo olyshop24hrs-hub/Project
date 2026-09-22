@@ -24,6 +24,7 @@
     background:var(--bg);
     color:var(--text);
     font-family:'Inter',sans-serif;
+    padding-bottom: 70px; /* Nafasi ya kuzuia maudhui kufunikwa na bottom nav kwenye simu */
   }
   h1,h2,h3,.font-display{font-family:'Fraunces',serif;font-weight:600;}
   a{color:inherit;text-decoration:none;}
@@ -57,17 +58,17 @@
   section{padding:30px 0;}
   .bg-panel{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
 
-  /* Urekebisho maalum: Kiboksi kifupi na kategoria zinazoteleza kwa mlalo (Horizontal Scroll) */
+  /* Search & Filter Wrapper */
   .search-filter-wrap {
     background: var(--panel-2);
     border: 1px solid var(--line);
     border-radius: 12px;
-    padding: 12px 14px;
-    margin-bottom: 20px;
+    padding: 16px;
+    margin-bottom: 25px;
     position: sticky;
-    top: 60px;
+    top: 20px;
     z-index: 1020;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
   }
   
   .custom-search-input {
@@ -80,15 +81,14 @@
     box-shadow: 0 0 0 0.15rem rgba(139, 124, 240, 0.25) !important;
   }
 
-  /* Kategoria zote zinakaa kwenye mstari mmoja unaoteleza vizuri na kuzuia fujo kwenye simu */
   #categoryFilters {
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
-    gap: 6px;
+    gap: 8px;
     align-items: center;
     padding-bottom: 2px;
-    scrollbar-width: none; /* Inaficha scrollbar kwenye simu ili iwe safi */
+    scrollbar-width: none;
   }
   #categoryFilters::-webkit-scrollbar {
     display: none;
@@ -98,9 +98,9 @@
     background: var(--panel);
     border: 1px solid var(--line);
     color: var(--muted);
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     font-weight: 500;
-    padding: 5px 12px;
+    padding: 6px 14px;
     border-radius: 50px;
     cursor: pointer;
     white-space: nowrap;
@@ -114,42 +114,83 @@
   }
 
   .category-dropdown .dropdown-toggle {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    color: var(--muted);
-    font-size: 0.78rem;
+    background: var(--panel) !important;
+    border: 1px solid var(--line) !important;
+    color: var(--text) !important;
+    font-size: 0.8rem;
     font-weight: 500;
-    padding: 5px 12px;
+    padding: 6px 14px;
     border-radius: 50px;
     cursor: pointer;
     white-space: nowrap;
     flex-shrink: 0;
     transition: all .15s ease;
   }
-  .category-dropdown .dropdown-toggle.active-dropdown {
-    background: var(--purple);
-    border-color: var(--purple);
-    color: #fff;
+  .category-dropdown .dropdown-toggle.active-dropdown,
+  .category-dropdown .dropdown-toggle:hover {
+    background: var(--purple) !important;
+    border-color: var(--purple) !important;
+    color: #fff !important;
   }
   .dropdown-menu-custom {
     background: var(--panel-2) !important;
     border: 1px solid var(--line) !important;
     border-radius: 12px !important;
     padding: 8px !important;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    max-height: 220px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+    max-height: 250px;
     overflow-y: auto;
+    z-index: 1050;
   }
   .dropdown-item-custom {
     color: var(--muted) !important;
-    font-size: 0.82rem;
-    padding: 8px 10px;
+    font-size: 0.85rem;
+    padding: 8px 12px;
     border-radius: 8px;
     transition: all .15s ease;
   }
   .dropdown-item-custom:hover, .dropdown-item-custom.active {
     background: var(--purple) !important;
     color: #fff !important;
+  }
+
+  /* Bottom Navigation Bar maalum kwa simu (App-like Bottom Bar) */
+  .mobile-bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(18, 19, 42, 0.98);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line);
+    z-index: 1030;
+    padding: 8px 12px;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--muted);
+    font-size: 0.72rem;
+    text-decoration: none;
+    transition: color .15s ease;
+  }
+  .mobile-nav-item i {
+    font-size: 1.25rem;
+    margin-bottom: 2px;
+  }
+  .mobile-nav-item.active, .mobile-nav-item:hover {
+    color: var(--gold);
+  }
+
+  /* Inaonekana kwenye simu pekee (Screen ndogo chini ya 992px) */
+  @media (max-width: 991.98px) {
+    .mobile-bottom-nav {
+      display: flex;
+    }
   }
 
   .product-card{
@@ -203,63 +244,58 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg sticky-top">
+<!-- Navbar ya juu ya Kompyuta/Tablet (Kwenye simu inakuwa ndogo au imefichwa) -->
+<nav class="navbar navbar-expand-lg sticky-top d-none d-lg-flex">
   <div class="container">
     <a class="navbar-brand" href="#">Oly Shop</a>
-    <div class="d-flex align-items-center gap-2 order-lg-3">
-      <button class="btn btn-outline-light btn-sm rounded-pill px-3 position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
-        <i class="bi bi-cart3"></i>
-        <span class="visually-hidden">Kikapu</span>
-        <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style="background:var(--gold);color:#12132a;display:none;">0</span>
-      </button>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"><span class="navbar-toggler-icon"></span></button>
-    </div>
     <div class="collapse navbar-collapse" id="navMenu">
-      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-4">
+      <ul class="navbar-nav ms-auto align-items-center gap-4">
         <li class="nav-item"><a class="nav-link" href="#bidhaa">Bidhaa</a></li>
         <li class="nav-item"><a class="nav-link" href="#kuhusu">Kuhusu Sisi</a></li>
         <li class="nav-item"><a class="nav-link" href="#mawasiliano">Mawasiliano</a></li>
         <li class="nav-item"><a class="nav-link" href="#eneo">Eneo</a></li>
+        <li class="nav-item">
+          <button class="btn btn-outline-light btn-sm rounded-pill px-3 position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
+            <i class="bi bi-cart3"></i> Kikapu
+            <span id="cartCountDesktop" class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style="background:var(--gold);color:#12132a;display:none;">0</span>
+          </button>
+        </li>
       </ul>
     </div>
   </div>
 </nav>
 
-<!-- Eneo dogo la kichwa -->
-<section class="pb-2 pt-3">
+<!-- Kichwa kidogo cha simu -->
+<section class="pb-1 pt-3 d-lg-none text-center">
   <div class="container">
-    <div class="row align-items-center">
-      <div class="col-md-12 text-center">
-        <p class="eyebrow mb-1">Karibu Oly Shop</p>
-        <h1 class="h4 mb-2">Mahitaji yako ya nyumbani</h1>
-      </div>
-    </div>
+    <p class="eyebrow mb-1">Oly Shop</p>
+    <h1 class="h5 mb-0">Mahitaji yako ya nyumbani</h1>
   </div>
 </section>
 
-<div class="beadwork my-2"></div>
-
-<!-- Sehemu ya Bidhaa (Search & Filter ziko hapa juu na ni Sticky) -->
+<!-- Sehemu kuu ya Bidhaa & Search Bar -->
 <section id="bidhaa" class="pt-2">
   <div class="container">
     
     <div class="search-filter-wrap">
-      <div class="row g-2 align-items-center">
-        <div class="col-12">
+      <div class="row g-3 align-items-center justify-content-between">
+        <div class="col-lg-5 col-md-6">
           <div class="input-group">
             <span class="input-group-text custom-search-input border-end-0 text-muted"><i class="bi bi-search"></i></span>
             <input type="text" id="productSearchInput" class="form-control custom-search-input border-start-0 ps-0" placeholder="Tafuta bidhaa...">
           </div>
         </div>
-        <div class="col-12">
-          <div id="categoryFilters">
-            <button class="filter-chip active" data-filter="all">Zote</button>
+        <div class="col-lg-7 col-md-6">
+          <div class="d-flex align-items-center gap-2 justify-content-md-end">
+            <div id="categoryFilters" class="flex-grow-1 flex-md-grow-0" style="overflow-x: auto;">
+              <button class="filter-chip active" data-filter="all">Zote</button>
+            </div>
+            <div id="categoryDropdownWrapper" class="flex-shrink-0"></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Orodha ya Bidhaa: col-6 kwenye simu, col-md-4 kwenye tablet, col-lg-3 kwenye kompyuta -->
     <div class="row g-2 g-md-3" id="productGrid"></div>
   </div>
 </section>
@@ -350,6 +386,31 @@
   </div>
 </section>
 
+<!-- Bottom Navigation Bar kwa ajili ya Simu (App-like Bottom Nav) -->
+<div class="mobile-bottom-nav">
+  <a href="#bidhaa" class="mobile-nav-item active">
+    <i class="bi bi-shop"></i>
+    <span>Duka</span>
+  </a>
+  <a href="#kuhusu" class="mobile-nav-item">
+    <i class="bi bi-info-circle"></i>
+    <span>Kuhusu</span>
+  </a>
+  <a href="#mawasiliano" class="mobile-nav-item">
+    <i class="bi bi-telephone"></i>
+    <span>Mawasiliano</span>
+  </a>
+  <a href="#eneo" class="mobile-nav-item">
+    <i class="bi bi-geo-alt"></i>
+    <span>Eneo</span>
+  </a>
+  <a href="#" class="mobile-nav-item position-relative" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
+    <i class="bi bi-cart3"></i>
+    <span>Kikapu</span>
+    <span id="cartCountMobile" class="position-absolute top-0 start-50 translate-middle badge rounded-pill" style="background:var(--gold);color:#12132a;display:none;font-size:0.6rem;">0</span>
+  </a>
+</div>
+
 <footer class="py-3 text-center">
   &copy; <span id="year"></span> Oly Shop. Haki zote zimehifadhiwa.
 </footer>
@@ -407,7 +468,8 @@ function removeFromCart(id){
 function renderCartPanel(){
   const list = document.getElementById('cartItemsList');
   const totalEl = document.getElementById('cartTotal');
-  const countEl = document.getElementById('cartCount');
+  const countDesktop = document.getElementById('cartCountDesktop');
+  const countMobile = document.getElementById('cartCountMobile');
   const items = Object.values(cart);
 
   list.innerHTML = '';
@@ -441,8 +503,14 @@ function renderCartPanel(){
   const total = items.reduce((sum, i) => sum + i.price * i.qty, 0);
   const count = items.reduce((sum, i) => sum + i.qty, 0);
   totalEl.textContent = fmt(total);
-  countEl.textContent = count;
-  countEl.style.display = count > 0 ? 'inline-block' : 'none';
+
+  if(count > 0){
+    if(countDesktop) { countDesktop.textContent = count; countDesktop.style.display = 'inline-block'; }
+    if(countMobile) { countMobile.textContent = count; countMobile.style.display = 'inline-block'; }
+  } else {
+    if(countDesktop) countDesktop.style.display = 'none';
+    if(countMobile) countMobile.style.display = 'none';
+  }
 }
 
 document.getElementById('clearCartBtn').addEventListener('click', () => {
@@ -459,14 +527,19 @@ document.getElementById('checkoutBtn').addEventListener('click', () => {
   window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
 });
 
-// Kupakia kategoria na kuzifanya ziteleze kwa mlalo kwenye simu
 async function loadCategories() {
   try {
     const res = await fetch(SHEET_API_URL + '?action=categories');
     const data = await res.json();
     const container = document.getElementById('categoryFilters');
+    const dropdownWrapper = document.getElementById('categoryDropdownWrapper');
     
     container.innerHTML = `<button class="filter-chip active" data-filter="all">Zote</button>`;
+    if(dropdownWrapper) dropdownWrapper.innerHTML = '';
+
+    container.querySelector('[data-filter="all"]').addEventListener('click', (e) => {
+      setActiveCategoryFilter('all', e.target);
+    });
 
     if (data.categories && data.categories.length > 0) {
       const allCats = data.categories;
@@ -486,12 +559,12 @@ async function loadCategories() {
         container.appendChild(btn);
       });
 
-      if (hiddenCats.length > 0) {
+      if (hiddenCats.length > 0 && dropdownWrapper) {
         const dropdownDiv = document.createElement('div');
         dropdownDiv.className = 'dropdown category-dropdown';
         
         dropdownDiv.innerHTML = `
-          <button class="btn dropdown-toggle d-inline-flex align-items-center justify-content-between gap-1 py-1 px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="moreCategoriesBtn">
+          <button class="btn dropdown-toggle d-inline-flex align-items-center justify-content-between gap-1 py-1 px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="moreCategoriesBtn">
             <span class="text-truncate">Zaidi</span> <i class="bi bi-chevron-down flex-shrink-0" style="font-size: 0.65rem;"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-custom dropdown-menu-end">
@@ -519,7 +592,7 @@ async function loadCategories() {
           });
         });
 
-        container.appendChild(dropdownDiv);
+        dropdownWrapper.appendChild(dropdownDiv);
       }
     }
   } catch (err) {
@@ -575,7 +648,7 @@ function filterAndRenderProducts(){
   const grid = document.getElementById('productGrid');
   
   let filtered = allProducts.filter(p => {
-    let matchesCategory = (activeCategory === 'all') || (p.category && p.category.toLowerCase() === activeCategory.toLowerCase());
+    let matchesCategory = (activeCategory === 'all') || (p.category && p.category.toLowerCase().trim() === activeCategory.toLowerCase().trim());
     let matchesSearch = !searchQuery || (p.name && p.name.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
