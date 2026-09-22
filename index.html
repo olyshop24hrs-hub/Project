@@ -20,16 +20,13 @@
     --muted:#a6a4cc;
     --line:#33355e;
   }
-  
   body{
     background:var(--bg);
     color:var(--text);
     font-family:'Inter',sans-serif;
   }
-
   h1,h2,h3,.font-display{font-family:'Fraunces',serif;font-weight:600;}
   a{color:inherit;text-decoration:none;}
-  
   .eyebrow{
     font-family:'JetBrains Mono',monospace;
     color:var(--gold);
@@ -37,7 +34,6 @@
     letter-spacing:0.08em;
     text-transform:uppercase;
   }
-
   .beadwork{
     height:10px;width:100%;
     background-image:
@@ -50,31 +46,28 @@
 
   .navbar{
     background:rgba(18,19,42,0.95) !important;
-    backdrop-filter:blur(8px);
     border-bottom:1px solid var(--line);
   }
   .navbar-brand{font-family:'Fraunces',serif;font-weight:700;color:var(--text) !important;}
   .nav-link{color:var(--muted) !important;font-weight:500;}
   .nav-link:hover{color:var(--gold) !important;}
-  
   .btn-coral{background:var(--coral);border-color:var(--coral);color:#12132a;font-weight:700;}
   .btn-coral:hover{background:var(--gold);border-color:var(--gold);color:#12132a;}
 
-  section{padding:50px 0;}
+  section{padding:30px 0;}
   .bg-panel{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
 
-  /* Search & Filter Tuli (Sticky) kwa Skrini Zote */
+  /* Urekebisho maalum: Kiboksi kifupi na kategoria zinazoteleza kwa mlalo (Horizontal Scroll) */
   .search-filter-wrap {
     background: var(--panel-2);
     border: 1px solid var(--line);
     border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 30px;
+    padding: 12px 14px;
+    margin-bottom: 20px;
     position: sticky;
-    top: 76px;
+    top: 60px;
     z-index: 1020;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
   }
   
   .custom-search-input {
@@ -84,25 +77,34 @@
   }
   .custom-search-input:focus {
     border-color: var(--purple) !important;
-    box-shadow: 0 0 0 0.2rem rgba(139, 124, 240, 0.25) !important;
+    box-shadow: 0 0 0 0.15rem rgba(139, 124, 240, 0.25) !important;
   }
 
+  /* Kategoria zote zinakaa kwenye mstari mmoja unaoteleza vizuri na kuzuia fujo kwenye simu */
   #categoryFilters {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 6px;
     align-items: center;
+    padding-bottom: 2px;
+    scrollbar-width: none; /* Inaficha scrollbar kwenye simu ili iwe safi */
+  }
+  #categoryFilters::-webkit-scrollbar {
+    display: none;
   }
 
   .filter-chip {
     background: var(--panel);
     border: 1px solid var(--line);
     color: var(--muted);
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 500;
-    padding: 6px 14px;
+    padding: 5px 12px;
     border-radius: 50px;
     cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
     transition: all .15s ease;
   }
   .filter-chip:hover, .filter-chip.active {
@@ -115,18 +117,15 @@
     background: var(--panel);
     border: 1px solid var(--line);
     color: var(--muted);
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 500;
-    padding: 6px 16px;
+    padding: 5px 12px;
     border-radius: 50px;
     cursor: pointer;
-    max-width: 140px;
-    overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
+    flex-shrink: 0;
     transition: all .15s ease;
   }
-  .category-dropdown .dropdown-toggle:hover, 
   .category-dropdown .dropdown-toggle.active-dropdown {
     background: var(--purple);
     border-color: var(--purple);
@@ -137,14 +136,14 @@
     border: 1px solid var(--line) !important;
     border-radius: 12px !important;
     padding: 8px !important;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    max-height: 250px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    max-height: 220px;
     overflow-y: auto;
   }
   .dropdown-item-custom {
     color: var(--muted) !important;
-    font-size: 0.85rem;
-    padding: 8px 12px;
+    font-size: 0.82rem;
+    padding: 8px 10px;
     border-radius: 8px;
     transition: all .15s ease;
   }
@@ -153,54 +152,53 @@
     color: #fff !important;
   }
 
-  /* Kadi za Bidhaa zinabadilika ukubwa kulingana na skrini (Responsive Grid) */
   .product-card{
     background:var(--panel);
     border:1px solid var(--line);
     border-radius:12px;
     text-align:center;
-    padding:20px 14px;
+    padding:14px 10px;
     height:100%;
     transition:transform .12s ease, border-color .12s ease;
   }
   .product-card:hover{transform:translateY(-3px);border-color:var(--purple);}
-  .product-card img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:8px;margin:0 auto 10px;display:block;}
-  .product-card .p-icon{font-size:2.4rem;margin-bottom:8px;}
-  .product-card .p-name{font-weight:600;font-size:0.92rem;}
-  .product-card .p-price{font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:0.85rem;}
+  .product-card img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:8px;margin:0 auto 8px;display:block;}
+  .product-card .p-icon{font-size:2.2rem;margin-bottom:6px;}
+  .product-card .p-name{font-weight:600;font-size:0.85rem;}
+  .product-card .p-price{font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:0.8rem;}
 
   .stat-card{
     background:var(--panel-2);
     border:1px solid var(--line);
     border-radius:12px;
     text-align:center;
-    padding:20px 10px;
+    padding:15px 8px;
   }
-  .stat-num{font-family:'Fraunces',serif;font-size:1.8rem;color:var(--gold);font-weight:700;}
-  .stat-label{font-size:0.78rem;color:var(--muted);}
+  .stat-num{font-family:'Fraunces',serif;font-size:1.5rem;color:var(--gold);font-weight:700;}
+  .stat-label{font-size:0.75rem;color:var(--muted);}
 
   .contact-icon{
-    width:42px;height:42px;flex-shrink:0;
+    width:38px;height:38px;flex-shrink:0;
     border-radius:10px;
     background:var(--panel-2);
     display:flex;align-items:center;justify-content:center;
-    font-size:1.15rem;
+    font-size:1.1rem;
     color:var(--gold);
   }
-  .map-wrap{border-radius:14px;overflow:hidden;border:1px solid var(--line);min-height:280px;}
-  .map-wrap iframe{width:100%;height:100%;min-height:280px;border:0;display:block;}
+  .map-wrap{border-radius:12px;overflow:hidden;border:1px solid var(--line);min-height:220px;}
+  .map-wrap iframe{width:100%;height:100%;min-height:220px;border:0;display:block;}
 
-  footer{border-top:1px solid var(--line);color:var(--muted);font-size:0.85rem;}
+  footer{border-top:1px solid var(--line);color:var(--muted);font-size:0.8rem;}
 
   .offcanvas{background:var(--panel) !important;color:var(--text) !important;border-left:1px solid var(--line);}
-  .cart-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);}
-  .cart-row img, .cart-row .cr-icon{width:64px;height:64px;border-radius:8px;object-fit:cover;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--panel-2);font-size:1.4rem;}
+  .cart-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);}
+  .cart-row img, .cart-row .cr-icon{width:50px;height:50px;border-radius:8px;object-fit:cover;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--panel-2);font-size:1.2rem;}
   .cart-row-info{flex:1;min-width:0;}
-  .cart-row-name{font-size:0.88rem;font-weight:600;}
-  .cart-row-price{font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--muted);}
-  .cart-qty-ctrl{display:flex;align-items:center;gap:6px;}
-  .cart-qty-btn{width:24px;height:24px;border-radius:6px;border:1px solid var(--line);background:var(--panel-2);color:var(--text);cursor:pointer;font-size:0.9rem;line-height:1;}
-  .cart-empty{color:var(--muted);font-size:0.88rem;text-align:center;padding:30px 10px;font-style:italic;}
+  .cart-row-name{font-size:0.82rem;font-weight:600;}
+  .cart-row-price{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--muted);}
+  .cart-qty-ctrl{display:flex;align-items:center;gap:4px;}
+  .cart-qty-btn{width:22px;height:22px;border-radius:5px;border:1px solid var(--line);background:var(--panel-2);color:var(--text);cursor:pointer;font-size:0.8rem;line-height:1;}
+  .cart-empty{color:var(--muted);font-size:0.85rem;text-align:center;padding:25px 10px;font-style:italic;}
 </style>
 </head>
 <body>
@@ -228,13 +226,12 @@
 </nav>
 
 <!-- Eneo dogo la kichwa -->
-<section class="pb-2 pt-4">
+<section class="pb-2 pt-3">
   <div class="container">
     <div class="row align-items-center">
       <div class="col-md-12 text-center">
         <p class="eyebrow mb-1">Karibu Oly Shop</p>
-        <h1 class="h3 mb-2">Mahitaji yako ya nyumbani, karibu nawe</h1>
-        <p class="text-muted" style="font-size:0.92rem;">Tunauza vyakula na bidhaa za nyumbani kwa bei nzuri na huduma ya haraka.</p>
+        <h1 class="h4 mb-2">Mahitaji yako ya nyumbani</h1>
       </div>
     </div>
   </div>
@@ -243,19 +240,19 @@
 <div class="beadwork my-2"></div>
 
 <!-- Sehemu ya Bidhaa (Search & Filter ziko hapa juu na ni Sticky) -->
-<section id="bidhaa" class="pt-3">
+<section id="bidhaa" class="pt-2">
   <div class="container">
     
     <div class="search-filter-wrap">
-      <div class="row g-3 align-items-center">
-        <div class="col-lg-5">
+      <div class="row g-2 align-items-center">
+        <div class="col-12">
           <div class="input-group">
             <span class="input-group-text custom-search-input border-end-0 text-muted"><i class="bi bi-search"></i></span>
             <input type="text" id="productSearchInput" class="form-control custom-search-input border-start-0 ps-0" placeholder="Tafuta bidhaa...">
           </div>
         </div>
-        <div class="col-lg-7">
-          <div class="d-flex flex-wrap gap-2 justify-content-lg-end" id="categoryFilters">
+        <div class="col-12">
+          <div id="categoryFilters">
             <button class="filter-chip active" data-filter="all">Zote</button>
           </div>
         </div>
@@ -263,47 +260,47 @@
     </div>
 
     <!-- Orodha ya Bidhaa: col-6 kwenye simu, col-md-4 kwenye tablet, col-lg-3 kwenye kompyuta -->
-    <div class="row g-3" id="productGrid"></div>
+    <div class="row g-2 g-md-3" id="productGrid"></div>
   </div>
 </section>
 
 <!-- Kuhusu Sisi -->
 <section id="kuhusu" class="bg-panel">
   <div class="container">
-    <div class="row align-items-center g-5">
+    <div class="row align-items-center g-4">
       <div class="col-lg-6">
         <p class="eyebrow mb-2">Kuhusu Sisi</p>
-        <h2 class="mb-3">Duka la Oly unaloweza kuliamini</h2>
-        <p style="color:var(--muted);line-height:1.7;">Oly Shop ni duka la mahitaji ya kila siku linalohudumia wateja wetu kwa uaminifu mkubwa. Tumejikita katika kutoa bidhaa bora, bei nafuu, na huduma bora.</p>
-        <div class="row g-3 mt-4">
+        <h2 class="h4 mb-3">Duka la mtaani unaloweza kuliamini</h2>
+        <p style="color:var(--muted);line-height:1.6;font-size:0.9rem;">Oly Shop ni duka la mahitaji ya kila siku linalohudumia familia na wateja wetu kwa uaminifu mkubwa na huduma ya haraka.</p>
+        <div class="row g-2 mt-3">
           <div class="col-4">
             <div class="stat-card">
               <div class="stat-num">100%</div>
-              <div class="stat-label">Ubora Halisi</div>
+              <div class="stat-label">Ubora</div>
             </div>
           </div>
           <div class="col-4">
             <div class="stat-card">
               <div class="stat-num">7</div>
-              <div class="stat-label">Siku kwa Wiki</div>
+              <div class="stat-label">Siku</div>
             </div>
           </div>
           <div class="col-4">
             <div class="stat-card">
               <div class="stat-num">Fast</div>
-              <div class="stat-label">Huduma ya Haraka</div>
+              <div class="stat-label">WhatsApp</div>
             </div>
           </div>
         </div>
       </div>
       <div class="col-lg-6">
-        <div class="p-4 rounded-3" style="background:var(--panel-2);border:1px solid var(--line);">
-          <h4 class="font-display mb-3" style="color:var(--gold);">Huduma Zetu</h4>
-          <ul class="list-unstyled mb-0" style="color:var(--muted);display:flex;flex-direction:column;gap:12px;">
+        <div class="p-3 rounded-3" style="background:var(--panel-2);border:1px solid var(--line);">
+          <h5 class="font-display mb-2" style="color:var(--gold);">Huduma Zetu</h5>
+          <ul class="list-unstyled mb-0 small" style="color:var(--muted);display:flex;flex-direction:column;gap:8px;">
             <li><i class="bi bi-check2-circle text-success me-2"></i> Uuzaji wa nafaka na bidhaa za vyakula</li>
             <li><i class="bi bi-check2-circle text-success me-2"></i> Usambazaji wa mafuta ya kupika na viungo</li>
             <li><i class="bi bi-check2-circle text-success me-2"></i> Bidhaa za usafi wa nyumbani na sabuni</li>
-            <li><i class="bi bi-check2-circle text-success me-2"></i> Huduma ya kuagiza kwa urahisi kupitia WhatsApp</li>
+            <li><i class="bi bi-check2-circle text-success me-2"></i> Kuagiza moja kwa moja kupitia WhatsApp</li>
           </ul>
         </div>
       </div>
@@ -311,33 +308,26 @@
   </div>
 </section>
 
-<!-- Mawasiliano na Eneo (Location) -->
+<!-- Mawasiliano na Eneo -->
 <section id="mawasiliano">
   <div class="container">
-    <div class="row g-5">
+    <div class="row g-4">
       <div class="col-lg-6">
         <p class="eyebrow mb-2">Mawasiliano</p>
-        <h2 class="mb-4">Tuko tayari kukusaidia</h2>
-        <div class="d-flex flex-column gap-4">
+        <h2 class="h4 mb-3">Tuko tayari kukusaidia</h2>
+        <div class="d-flex flex-column gap-3">
           <div class="d-flex align-items-center gap-3">
             <div class="contact-icon"><i class="bi bi-whatsapp"></i></div>
             <div>
-              <div style="font-size:0.82rem;color:var(--muted);">WhatsApp / Simu</div>
-              <div style="font-weight:600;">+255 688 628 503</div>
+              <div style="font-size:0.78rem;color:var(--muted);">WhatsApp / Simu</div>
+              <div style="font-weight:600;font-size:0.9rem;">+255 688 628 503</div>
             </div>
           </div>
           <div class="d-flex align-items-center gap-3">
             <div class="contact-icon"><i class="bi bi-envelope"></i></div>
             <div>
-              <div style="font-size:0.82rem;color:var(--muted);">Barua pepe</div>
-              <div style="font-weight:600;">info@olyshop.co.tz</div>
-            </div>
-          </div>
-          <div class="d-flex align-items-center gap-3">
-            <div class="contact-icon"><i class="bi bi-clock"></i></div>
-            <div>
-              <div style="font-size:0.82rem;color:var(--muted);">Muda wa Kufungua</div>
-              <div style="font-weight:600;">Jumatatu – Jumapili: 12:00 Asubuhi – 3:30 Usiku</div>
+              <div style="font-size:0.78rem;color:var(--muted);">Barua pepe</div>
+              <div style="font-weight:600;font-size:0.9rem;">info@olyshop.co.tz</div>
             </div>
           </div>
         </div>
@@ -345,22 +335,22 @@
 
       <div class="col-lg-6" id="eneo">
         <p class="eyebrow mb-2">Eneo Letu</p>
-        <h2 class="mb-4">Tembelea Duka Letu</h2>
-        <div class="map-wrap mb-3">
+        <h2 class="h4 mb-3">Tembelea Duka Letu</h2>
+        <div class="map-wrap mb-2">
             <iframe
-            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d2064.9532237067997!2d31.66877041393465!3d-1.8347651151935456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2stz!4v1784642771515!5m2!1sen!2stz"
+            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d2064.9532237067997!2d31.66877041393465!3d-1.8347651151935456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2stz!4v1784642771515"
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
-            title="Ramani ya eneo la Duka Langu">
+            title="Ramani ya eneo la Oly Shop">
           </iframe>
         </div>
-        <p style="color:var(--muted);font-size:0.9rem;"><i class="bi bi-geo-alt text-danger me-1"></i> Barabara Ya Bukoba Mjini, karibu na kituo cha afya huruma — unaweza kufika moja kwa moja.</p>
+        <p style="color:var(--muted);font-size:0.85rem;"><i class="bi bi-geo-alt text-danger me-1"></i> Bukoba Mjini, karibu na kituo cha afya huruma.</p>
       </div>
     </div>
   </div>
 </section>
 
-<footer class="py-4 text-center">
+<footer class="py-3 text-center">
   &copy; <span id="year"></span> Oly Shop. Haki zote zimehifadhiwa.
 </footer>
 
@@ -432,11 +422,11 @@ function renderCartPanel(){
         ${media}
         <div class="cart-row-info">
           <div class="cart-row-name">${item.name}</div>
-          <div class="cart-row-price">${fmt(item.price)} kila moja</div>
+          <div class="cart-row-price">${fmt(item.price)}</div>
         </div>
         <div class="cart-qty-ctrl">
           <button class="cart-qty-btn" data-act="dec">−</button>
-          <span style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;min-width:16px;text-align:center;">${item.qty}</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;min-width:14px;text-align:center;">${item.qty}</span>
           <button class="cart-qty-btn" data-act="inc">+</button>
         </div>
         <button class="btn btn-sm btn-link text-danger p-0 ms-1" data-act="rm" style="text-decoration:none;">✕</button>
@@ -469,6 +459,7 @@ document.getElementById('checkoutBtn').addEventListener('click', () => {
   window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
 });
 
+// Kupakia kategoria na kuzifanya ziteleze kwa mlalo kwenye simu
 async function loadCategories() {
   try {
     const res = await fetch(SHEET_API_URL + '?action=categories');
@@ -479,7 +470,7 @@ async function loadCategories() {
 
     if (data.categories && data.categories.length > 0) {
       const allCats = data.categories;
-      const maxVisible = 5; 
+      const maxVisible = 4; 
       const visibleCats = allCats.slice(0, maxVisible);
       const hiddenCats = allCats.slice(maxVisible);
 
@@ -500,11 +491,11 @@ async function loadCategories() {
         dropdownDiv.className = 'dropdown category-dropdown';
         
         dropdownDiv.innerHTML = `
-          <button class="btn dropdown-toggle d-inline-flex align-items-center justify-content-between gap-1" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="moreCategoriesBtn">
-            <span class="text-truncate">Zaidi</span> <i class="bi bi-chevron-down flex-shrink-0" style="font-size: 0.7rem;"></i>
+          <button class="btn dropdown-toggle d-inline-flex align-items-center justify-content-between gap-1 py-1 px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="moreCategoriesBtn">
+            <span class="text-truncate">Zaidi</span> <i class="bi bi-chevron-down flex-shrink-0" style="font-size: 0.65rem;"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-custom dropdown-menu-end">
-            ${hiddenCats.map(cat => `<li><a class="dropdown-item dropdown-item-custom d-flex justify-content-between align-items-center" href="#" data-filter="${cat}"><span class="text-truncate">${cat}</span><i class="bi bi-check check-icon ms-2" style="display:none;"></i></a></li>`).join('')}
+            ${hiddenCats.map(cat => `<li><a class="dropdown-item dropdown-item-custom d-flex justify-content-between align-items-center" href="#" data-filter="${cat}"><span class="text-truncate">${cat}</span><i class="bi bi-check check-icon ms-2 text-warning" style="display:none;"></i></a></li>`).join('')}
           </ul>
         `;
 
@@ -573,7 +564,7 @@ async function fetchAllProducts(){
       allProducts = data.products;
       filterAndRenderProducts();
     } else {
-      grid.innerHTML = `<div class="col-12 text-center py-4"><p class="text-muted fst-italic">Hakuna bidhaa zilizopatikana kwenye mfumo.</p></div>`;
+      grid.innerHTML = `<div class="col-12 text-center py-4"><p class="text-muted fst-italic">Hakuna bidhaa zilizopatikana.</p></div>`;
     }
   } catch(err) {
     grid.innerHTML = `<div class="col-12 text-center py-4"><p class="text-danger fst-italic">Imeshindwa kupakia bidhaa.</p></div>`;
@@ -592,13 +583,12 @@ function filterAndRenderProducts(){
   grid.innerHTML = '';
 
   if(filtered.length === 0){
-    grid.innerHTML = `<div class="col-12 text-center py-4"><p class="text-muted fst-italic">Hakuna bidhaa zilizopatikana kwa uchujaji huu.</p></div>`;
+    grid.innerHTML = `<div class="col-12 text-center py-4"><p class="text-muted fst-italic">Hakuna bidhaa zilizopatikana.</p></div>`;
     return;
   }
 
   filtered.forEach(p => {
     const col = document.createElement('div');
-    // Hapa ndipo Bootstrap inafanya kazi nzuri: col-6 (bidhaa 2 kwa mstari kwenye simu), col-md-4 (3 kwa mstari kwenye tablet), col-lg-3 (4 kwa mstari kwenye kompyuta)
     col.className = 'col-6 col-md-4 col-lg-3';
     const media = p.image
       ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.outerHTML='<div class=&quot;p-icon&quot;>${p.icon||'🛒'}</div>'">`
