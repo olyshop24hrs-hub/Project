@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Duka Langu POS — Admin App</title>
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1020;
+    --panel:#181938;
+    --purple:#8b7cf0;
+    --gold:#f0a93a;
+    --coral:#e85d4e;
+    --text:#f5f2ea;
+    --muted:#c2c0e8;
+    --line:#2e305d;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    padding: 15px;
+    margin: 0;
+  }
+  .app-container {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    padding-bottom: 40px;
+    transition: all 0.3s ease;
+  }
+  @media (min-width: 768px) {
+    .app-container { max-width: 750px; }
+  }
+  .app-header {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 16px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  }
+  .app-header h4 {
+    font-family: 'Fraunces', serif;
+    color: var(--gold);
+    font-size: 1.35rem;
+    margin: 0;
+  }
+  .admin-card{
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin-bottom: 18px;
+  }
+  h5{ font-family: 'Fraunces', serif; color: var(--gold); }
+  .form-label{ color: var(--muted); font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; }
+  .form-control, .form-select{
+    background: #11122b !important;
+    border: 1px solid var(--line) !important;
+    color: #ffffff !important;
+    border-radius: 12px;
+    padding: 13px 16px;
+    font-size: 1.05rem;
+  }
+  .form-control::placeholder { color: #8c89b8 !important; opacity: 1; }
+  .form-control:focus, .form-select:focus{
+    border-color: var(--purple) !important;
+    box-shadow: 0 0 0 0.2rem rgba(139, 124, 240, 0.25) !important;
+    color: #ffffff !important;
+  }
+  .btn-coral{
+    background: var(--coral);
+    border-color: var(--coral);
+    color: #0f1020;
+    font-weight: 700;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 1.05rem;
+    transition: all 0.2s ease;
+  }
+  .btn-coral:hover{ background: var(--gold); border-color: var(--gold); color: #0f1020; }
+  .action-btn {
+    background: #11122b;
+    border: 1px solid var(--line);
+    color: var(--text);
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .img-preview-box {
+    width: 100%;
+    height: 170px;
+    border: 2px dashed var(--line);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: #11122b;
+    margin-top: 8px;
+  }
+  .img-preview-box img { width: 100%; height: 100%; object-fit: cover; display: none; }
+  .img-placeholder { text-align: center; color: var(--muted); font-size: 14px; }
+  .product-item {
+    background: #11122b;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .product-thumb { width: 65px; height: 65px; object-fit: cover; border-radius: 10px; border: 1px solid var(--line); }
+  .product-details { color: #e2dfd2 !important; font-size: 14px; font-weight: 500; }
+  .page-section { display: none; }
+  .page-section.active { display: block; }
+  .category-scroll-container {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+    scrollbar-width: none;
+  }
+  .category-scroll-container::-webkit-scrollbar { display: none; }
+  .filter-chip {
+    background: #11122b;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .filter-chip.active { background: var(--purple); color: #fff; border-color: var(--purple); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  
+  <!-- UKURASA WA 1: KUONGEZA BIDHAA -->
+  <div id="sectionAddProduct" class="page-section active">
+    
+    <div class="app-header">
+      <h4><i class="bi bi-shop me-1"></i> Duka POS</h4>
+      <div class="d-flex gap-2">
+        <button class="btn btn-sm btn-outline-warning fw-bold px-3 py-1.5 rounded-pill" onclick="switchPage('list')">
+          <i class="bi bi-list-ul me-1"></i> Orodha
+        </button>
+        <button class="btn btn-sm btn-outline-secondary text-white fw-bold px-2.5 py-1.5 rounded-pill" onclick="openSettingsModal()">
+          <i class="bi bi-gear-fill"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <div class="text-center mb-3">
+        <h5 class="mb-1 fs-4">Ongeza Bidhaa Mpya</h5>
+        <p class="text-muted small mb-0">Weka bidhaa mpya kwenye mfumo</p>
+      </div>
+      
+      <form id="productForm">
+        <div class="mb-3">
+          <label class="form-label">Jina la Bidhaa</label>
+          <input type="text" id="pName" class="form-control" placeholder="Mf. Sukari (1kg)" oninput="toTitleCase(this)" required>
+        </div>
+
+        <div class="row">
+          <div class="col-6 mb-3">
+            <label class="form-label">Bei (TSh)</label>
+            <input type="number" id="pPrice" class="form-control" placeholder="3000" required>
+          </div>
+          <div class="col-6 mb-3">
+            <label class="form-label">Stoo (Stock)</label>
+            <input type="number" id="pStock" class="form-control" value="20" required>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Kategoria</label>
+          <input type="text" id="pCategory" class="form-control" placeholder="Mf. Nafaka, Vinywaji..." oninput="toTitleCase(this)" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label mb-2 d-block">Picha ya Bidhaa</label>
+          <div class="row g-2 mb-2">
+            <div class="col-6">
+              <button type="button" class="btn action-btn w-100 py-3" onclick="document.getElementById('pImageCamera').click()">
+                <i class="bi bi-camera-fill text-warning fs-4"></i><br> Kamera
+              </button>
+              <input type="file" id="pImageCamera" accept="image/*" capture="environment" style="display: none;">
+            </div>
+            <div class="col-6">
+              <button type="button" class="btn action-btn w-100 py-3" onclick="document.getElementById('pImageGallery').click()">
+                <i class="bi bi-folder2-open text-info fs-4"></i><br> Galeri
+              </button>
+              <input type="file" id="pImageGallery" accept="image/*" style="display: none;">
+            </div>
+          </div>
+
+          <div class="img-preview-box">
+            <div id="imgPlaceholder" class="img-placeholder">
+              <i class="bi bi-image fs-3 d-block mb-1"></i> Chagua au piga picha
+            </div>
+            <img id="imagePreview" alt="Preview">
+          </div>
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn btn-coral w-100 shadow-sm mt-2">
+          <i class="bi bi-cloud-arrow-up-fill me-1"></i> Hifadhi Bidhaa Mpya
+        </button>
+      </form>
+      <div id="statusMessage" class="mt-3 text-center small fw-semibold"></div>
+    </div>
+  </div>
+
+
+  <!-- UKURASA WA 2: ORODHA YA BIDHAA -->
+  <div id="sectionProductList" class="page-section">
+    
+    <div class="app-header">
+      <button class="btn btn-sm btn-outline-light px-3.5 py-2 rounded-pill fw-semibold" onclick="switchPage('add')">
+        <i class="bi bi-arrow-left me-1"></i> Rudi
+      </button>
+      <h4 class="mb-0 text-warning" style="font-family:'Fraunces',serif; font-size:1.2rem;"><i class="bi bi-box-seam me-1"></i> Orodha</h4>
+    </div>
+
+    <div class="admin-card">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0 fs-5">Simamia Bidhaa</h5>
+        <button class="btn btn-sm btn-dark text-warning border-secondary px-3 py-1.5 fw-semibold" onclick="fetchProducts()"><i class="bi bi-arrow-clockwise"></i> Sasisha</button>
+      </div>
+
+      <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-text bg-dark border-secondary text-muted px-3"><i class="bi bi-search"></i></span>
+          <input type="text" id="searchInput" class="form-control py-3 text-white" placeholder="Tafuta bidhaa..." oninput="filterProducts()">
+        </div>
+      </div>
+
+      <div id="categoryFilters" class="category-scroll-container">
+        <span class="filter-chip active" onclick="filterByCategory('ALL', this)">Zote</span>
+      </div>
+      
+      <div id="loadingProducts" class="text-muted text-center py-4">Inapakia bidhaa...</div>
+      <div id="productsContainer"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL YA MIPANGILIO (SETTINGS MODAL) -->
+<div class="modal fade" id="settingsModal" tabindex="-1" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background: var(--panel); border: 1px solid var(--line); color: var(--text); border-radius: 18px; padding: 20px;">
+      <div class="modal-header border-bottom border-secondary py-3">
+        <h5 class="modal-title text-warning fs-5"><i class="bi bi-gear-fill me-1"></i> Mipangilio ya Mfumo</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted small mb-3">Weka taarifa za mfumo wako mara moja. Zitasitawishwa kwenye kifaa hiki pekee kwa usalama.</p>
+        
+        <div class="mb-3">
+          <label class="form-label">Google Apps Script Web App URL</label>
+          <input type="text" id="settingUrl" class="form-control text-white" placeholder="https://script.google.com/...">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Cloudinary Cloud Name</label>
+          <input type="text" id="settingCloudName" class="form-control text-white" placeholder="jina_la_cloud_yako">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Cloudinary Upload Preset</label>
+          <input type="text" id="settingPreset" class="form-control text-white" placeholder="preset_yako">
+        </div>
+        <div id="settingsStatus" class="text-center small fw-semibold"></div>
+      </div>
+      <div class="modal-footer border-top border-secondary py-3">
+        <button type="button" class="btn btn-outline-light px-4 py-2" data-bs-dismiss="modal">Ghairi</button>
+        <button type="button" class="btn btn-coral px-4 py-2" onclick="saveSettings()">Hifadhi Mipangilio</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL YA KUHARIRI BIDHAA -->
+<div class="modal fade" id="editModal" tabindex="-1" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content" style="background: var(--panel); border: 1px solid var(--line); color: var(--text); border-radius: 18px; padding: 15px;">
+      <div class="modal-header border-bottom border-secondary py-3">
+        <h5 class="modal-title text-warning fs-4"><i class="bi bi-pencil-square"></i> Hariri Bidhaa</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" id="closeEditModalBtn"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editId">
+        <div class="mb-3">
+          <label class="form-label">Jina la Bidhaa</label>
+          <input type="text" id="editName" class="form-control text-white" oninput="toTitleCase(this)">
+        </div>
+        <div class="row">
+          <div class="col-6 mb-3">
+            <label class="form-label">Bei (TSh)</label>
+            <input type="number" id="editPrice" class="form-control text-white">
+          </div>
+          <div class="col-6 mb-3">
+            <label class="form-label">Stock</label>
+            <input type="number" id="editStock" class="form-control text-white">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Kategoria</label>
+          <input type="text" id="editCategory" class="form-control text-white" oninput="toTitleCase(this)">
+        </div>
+        <div id="editStatusMessage" class="mt-2 text-center small fw-semibold"></div>
+      </div>
+      <div class="modal-footer border-top border-secondary py-3">
+        <button type="button" class="btn btn-outline-light px-4 py-2" data-bs-dismiss="modal" id="cancelEditBtn">Ghairi</button>
+        <button type="button" id="saveEditBtn" class="btn btn-coral px-4 py-2" onclick="saveEditedProduct()">
+          <i class="bi bi-check2-circle me-1"></i> Hifadhi Mabadiliko
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL YA KUFUTA -->
+<div class="modal fade" id="deleteModal" tabindex="-1" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center" style="background: var(--panel); border: 1px solid var(--line); color: var(--text); border-radius: 18px; padding: 25px;">
+      <div class="modal-body">
+        <input type="hidden" id="deleteId">
+        <div class="mb-3 text-danger fs-1"><i class="bi bi-exclamation-triangle-fill"></i></div>
+        <h5 class="text-warning mb-2 fs-4">Thibitisho la Kufuta</h5>
+        <p class="text-muted mb-3">Je, una uhakika unataka kufuta bidhaa hii kwenye mfumo?</p>
+        <div id="deleteStatusMessage" class="mb-2 small fw-semibold"></div>
+      </div>
+      <div class="modal-footer border-top-0 justify-content-center pt-0">
+        <button type="button" class="btn btn-outline-light px-4 py-2" data-bs-dismiss="modal" id="cancelDeleteBtn">Ghairi</button>
+        <button type="button" id="confirmDeleteBtn" class="btn btn-danger px-4 py-2 fw-bold" onclick="executeDelete()">
+          <i class="bi bi-trash-fill me-1"></i> Ndiyo, Futa
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // KUSOMA LINK KUTOKA KWENYE KUMBUKUMBU YA KIFAA (LOCALSTORAGE)
+  let WEB_APP_URL = localStorage.getItem('pos_web_app_url') || "";
+  let CLOUDINARY_CLOUD_NAME = localStorage.getItem('pos_cloud_name') || "";
+  let CLOUDINARY_UPLOAD_PRESET = localStorage.getItem('pos_upload_preset') || "";
+
+  let selectedFile = null;
+  let allProducts = [];
+  let currentCategory = 'ALL';
+  let editModalInstance = null;
+  let deleteModalInstance = null;
+  let settingsModalInstance = null;
+
+  document.addEventListener("DOMContentLoaded", function() {
+    editModalInstance = new bootstrap.Modal(document.getElementById('editModal'));
+    deleteModalInstance = new bootstrap.Modal(document.getElementById('deleteModal'));
+    settingsModalInstance = new bootstrap.Modal(document.getElementById('settingsModal'));
+
+    // Kama hakuna link zilizowekwa bado, mpeleke mtumiaji kwenye mipangilio moja kwa moja
+    if(!WEB_APP_URL) {
+      setTimeout(() => { openSettingsModal(); }, 500);
+    }
+  });
+
+  function openSettingsModal() {
+    document.getElementById('settingUrl').value = WEB_APP_URL;
+    document.getElementById('settingCloudName').value = CLOUDINARY_CLOUD_NAME;
+    document.getElementById('settingPreset').value = CLOUDINARY_UPLOAD_PRESET;
+    document.getElementById('settingsStatus').innerHTML = '';
+    settingsModalInstance.show();
+  }
+
+  function saveSettings() {
+    const url = document.getElementById('settingUrl').value.trim();
+    const cloud = document.getElementById('settingCloudName').value.trim();
+    const preset = document.getElementById('settingPreset').value.trim();
+    const status = document.getElementById('settingsStatus');
+
+    if(!url || !cloud || !preset) {
+      status.innerHTML = `<span class="text-danger">Tafadhali jaza sehemu zote!</span>`;
+      return;
+    }
+
+    localStorage.setItem('pos_web_app_url', url);
+    localStorage.setItem('pos_cloud_name', cloud);
+    localStorage.setItem('pos_upload_preset', preset);
+
+    WEB_APP_URL = url;
+    CLOUDINARY_CLOUD_NAME = cloud;
+    CLOUDINARY_UPLOAD_PRESET = preset;
+
+    status.innerHTML = `<span class="text-success"><i class="bi bi-check-circle-fill"></i> Mipangilio imehifadhiwa!</span>`;
+    setTimeout(() => {
+      settingsModalInstance.hide();
+      fetchProducts();
+    }, 1000);
+  }
+
+  function switchPage(page) {
+    const addSection = document.getElementById('sectionAddProduct');
+    const listSection = document.getElementById('sectionProductList');
+    
+    if(page === 'list') {
+      addSection.classList.remove('active');
+      listSection.classList.add('active');
+      fetchProducts();
+    } else {
+      listSection.classList.remove('active');
+      addSection.classList.add('active');
+    }
+  }
+
+  function toTitleCase(inputElement) {
+    let start = inputElement.selectionStart;
+    let end = inputElement.selectionEnd;
+    let words = inputElement.value.toLowerCase().split(" ");
+    for (let i = 0; i < words.length; i++) {
+      if (words[i].length > 0) {
+        words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+      }
+    }
+    inputElement.value = words.join(" ");
+    inputElement.setSelectionRange(start, end);
+  }
+
+  function handleSelectedFile(file) {
+    if (file) {
+      selectedFile = file;
+      const preview = document.getElementById('imagePreview');
+      const placeholder = document.getElementById('imgPlaceholder');
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+        placeholder.style.display = 'none';
+      }
+      reader.readAsDataURL(file);
+    }
+  }
+
+  document.getElementById('pImageCamera').addEventListener('change', function() {
+    if(this.files[0]) handleSelectedFile(this.files[0]);
+  });
+  document.getElementById('pImageGallery').addEventListener('change', function() {
+    if(this.files[0]) handleSelectedFile(this.files[0]);
+  });
+
+  async function fetchProducts() {
+    if(!WEB_APP_URL) return;
+    const container = document.getElementById('productsContainer');
+    const loader = document.getElementById('loadingProducts');
+    loader.style.display = 'block';
+    container.innerHTML = '';
+
+    try {
+      const res = await fetch(WEB_APP_URL);
+      allProducts = await res.json();
+      loader.style.display = 'none';
+      
+      buildCategoryFilters();
+      filterProducts();
+    } catch(err) {
+      loader.style.display = 'none';
+      container.innerHTML = `<p class="text-danger text-center">Imeshindwa kupakia. Hakikisha URL yako ya Web App iko sahihi kwenye Mipangilio (Settings).</p>`;
+    }
+  }
+
+  function buildCategoryFilters() {
+    const filtersContainer = document.getElementById('categoryFilters');
+    const categories = ['ALL', ...new Set(allProducts.map(p => p.category).filter(Boolean))];
+    
+    filtersContainer.innerHTML = '';
+    categories.forEach(cat => {
+      const activeClass = (cat === currentCategory) ? 'active' : '';
+      filtersContainer.innerHTML += `
+        <span class="filter-chip ${activeClass}" onclick="filterByCategory('${cat}', this)">${cat === 'ALL' ? 'Zote' : cat}</span>
+      `;
+    });
+  }
+
+  function filterByCategory(category, element) {
+    currentCategory = category;
+    document.querySelectorAll('.filter-chip').forEach(el => el.classList.remove('active'));
+    element.classList.add('active');
+    filterProducts();
+  }
+
+  function filterProducts() {
+    const searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+    const filtered = allProducts.filter(p => {
+      const matchesCategory = (currentCategory === 'ALL' || p.category === currentCategory);
+      const matchesSearch = (p.name.toLowerCase().includes(searchQuery) || (p.category && p.category.toLowerCase().includes(searchQuery)));
+      return matchesCategory && matchesSearch;
+    });
+    displayProducts(filtered);
+  }
+
+  function displayProducts(productsList) {
+    const container = document.getElementById('productsContainer');
+    container.innerHTML = '';
+
+    if(!productsList || productsList.length === 0) {
+      container.innerHTML = `<p class="text-muted text-center py-4">Hakuna bidhaa zilizopatikana.</p>`;
+      return;
+    }
+
+    productsList.forEach(p => {
+      container.innerHTML += `
+        <div class="product-item">
+          <div class="d-flex align-items-center gap-3">
+            <img src="${p.image || 'https://via.placeholder.com/65'}" class="product-thumb">
+            <div>
+              <h6 class="mb-1 text-white fw-bold" style="font-size: 15px;">${p.name}</h6>
+              <div class="product-details mb-1">TSh ${Number(p.price).toLocaleString()} | Stoo: ${p.stock}</div>
+              <span class="badge bg-secondary text-warning" style="font-size: 11px; padding: 4px 10px;">${p.category}</span>
+            </div>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-info p-2 px-3" onclick="openEditModal('${p.id}')"><i class="bi bi-pencil-fill"></i></button>
+            <button class="btn btn-sm btn-outline-danger p-2 px-3" onclick="openDeleteModal('${p.id}')"><i class="bi bi-trash-fill"></i></button>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  document.getElementById('productForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    if(!WEB_APP_URL) {
+      alert("Tafadhali Weka URL ya Web App kwenye Mipangilio (Settings) kwanza!");
+      openSettingsModal();
+      return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    const msg = document.getElementById('statusMessage');
+    
+    const name = document.getElementById('pName').value.trim();
+    const price = document.getElementById('pPrice').value.trim();
+    const stock = document.getElementById('pStock').value.trim();
+    const category = document.getElementById('pCategory').value.trim();
+
+    if(!selectedFile) {
+      alert("Tafadhali chagua au piga picha ya bidhaa!");
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Inapakia na kuhifadhi...`;
+    msg.textContent = "";
+
+    try {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+      const cloudinaryRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+        method: "POST",
+        body: formData
+      });
+      const cloudinaryData = await cloudinaryRes.json();
+      if(!cloudinaryData.secure_url) throw new Error("Imeshindwa kupakia picha Cloudinary.");
+
+      const productData = {
+        action: "add_product",
+        id: "P" + Date.now(),
+        name: name,
+        price: Number(price),
+        stock: Number(stock),
+        category: category,
+        image: cloudinaryData.secure_url,
+        icon: "🛒"
+      };
+
+      await fetch(WEB_APP_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(productData)
+      });
+
+      msg.innerHTML = `<span class="text-success"><i class="bi bi-check-circle-fill"></i> Imehifadhiwa kikamilifu!</span>`;
+      document.getElementById('productForm').reset();
+      document.getElementById('imagePreview').style.display = 'none';
+      document.getElementById('imgPlaceholder').style.display = 'block';
+      selectedFile = null;
+
+    } catch (err) {
+      msg.innerHTML = `<span class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Hitilafu: ${err.message}</span>`;
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = `<i class="bi bi-cloud-arrow-up-fill me-1"></i> Hifadhi Bidhaa Mpya`;
+    }
+  });
+
+  function openEditModal(id) {
+    const p = allProducts.find(item => item.id == id);
+    if(!p) return;
+
+    document.getElementById('editId').value = p.id;
+    document.getElementById('editName').value = p.name;
+    document.getElementById('editPrice').value = p.price;
+    document.getElementById('editStock').value = p.stock;
+    document.getElementById('editCategory').value = p.category;
+    document.getElementById('editStatusMessage').innerHTML = '';
+
+    editModalInstance.show();
+  }
+
+  async function saveEditedProduct() {
+    const saveBtn = document.getElementById('saveEditBtn');
+    const cancelBtn = document.getElementById('cancelEditBtn');
+    const closeBtn = document.getElementById('closeEditModalBtn');
+    const statusMsg = document.getElementById('editStatusMessage');
+
+    const id = document.getElementById('editId').value;
+    const name = document.getElementById('editName').value.trim();
+    const price = document.getElementById('editPrice').value.trim();
+    const stock = document.getElementById('editStock').value.trim();
+    const category = document.getElementById('editCategory').value.trim();
+
+    if(!name || !price || !category) {
+      statusMsg.innerHTML = `<span class="text-warning">Jaza nafasi zote wazi!</span>`;
+      return;
+    }
+
+    saveBtn.disabled = true;
+    cancelBtn.disabled = true;
+    closeBtn.disabled = true;
+    
+    saveBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Inahifadhi...`;
+    statusMsg.innerHTML = `<div class="text-info"><span class="spinner-grow spinner-grow-sm me-1"></span> Inatuma taarifa...</div>`;
+
+    const data = {
+      action: "edit_product",
+      id: id,
+      name: name,
+      price: Number(price),
+      stock: Number(stock),
+      category: category
+    };
+
+    try {
+      await fetch(WEB_APP_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(data)
+      });
+      
+      statusMsg.innerHTML = `<span class="text-success"><i class="bi bi-check-circle-fill"></i> Mabadiliko yamehifadhiwa!</span>`;
+      saveBtn.innerHTML = `<i class="bi bi-check-all"></i> Imekamilika`;
+
+      setTimeout(() => {
+        editModalInstance.hide();
+        fetchProducts();
+        
+        saveBtn.disabled = false;
+        cancelBtn.disabled = false;
+        closeBtn.disabled = false;
+        saveBtn.innerHTML = `<i class="bi bi-check2-circle me-1"></i> Hifadhi Mabadiliko`;
+        statusMsg.innerHTML = '';
+      }, 1000);
+
+    } catch(err) {
+      statusMsg.innerHTML = `<span class="text-danger">Imeshindwa. Angalia mtandao!</span>`;
+      saveBtn.disabled = false;
+      cancelBtn.disabled = false;
+      closeBtn.disabled = false;
+      saveBtn.innerHTML = `<i class="bi bi-check2-circle me-1"></i> Hifadhi Mabadiliko`;
+    }
+  }
+
+  function openDeleteModal(id) {
+    document.getElementById('deleteId').value = id;
+    document.getElementById('deleteStatusMessage').innerHTML = '';
+    deleteModalInstance.show();
+  }
+
+  async function executeDelete() {
+    const id = document.getElementById('deleteId').value;
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    const cancelBtn = document.getElementById('cancelDeleteBtn');
+    const statusMsg = document.getElementById('deleteStatusMessage');
+
+    confirmBtn.disabled = true;
+    cancelBtn.disabled = true;
+
+    confirmBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Inafuta...`;
+    statusMsg.innerHTML = `<div class="text-info"><span class="spinner-grow spinner-grow-sm me-1"></span> Inaondoa bidhaa...</div>`;
+
+    try {
+      await fetch(WEB_APP_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ action: "delete_product", id: id })
+      });
+
+      statusMsg.innerHTML = `<span class="text-success"><i class="bi bi-check-circle-fill"></i> Bidhaa imefutwa kikamilifu!</span>`;
+      confirmBtn.innerHTML = `<i class="bi bi-check-lg"></i> Imefutwa`;
+
+      setTimeout(() => {
+        deleteModalInstance.hide();
+        fetchProducts();
+
+        confirmBtn.disabled = false;
+        cancelBtn.disabled = false;
+        confirmBtn.innerHTML = `<i class="bi bi-trash-fill me-1"></i> Ndiyo, Futa`;
+        statusMsg.innerHTML = '';
+      }, 1000);
+
+    } catch(err) {
+      statusMsg.innerHTML = `<span class="text-danger">Imeshindwa kufuta. Angalia mtandao!</span>`;
+      confirmBtn.disabled,confirmBtn.disabled = false;
+      cancelBtn.disabled = false;
+      confirmBtn.innerHTML = `<i class="bi bi-trash-fill me-1"></i> Ndiyo, Futa`;
+    }
+  }
+</script>
+</body>
+</html>
